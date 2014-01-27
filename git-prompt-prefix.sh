@@ -5,6 +5,9 @@
 # Also uses the prompt_callback function of bash-git-prompt to set the 
 # window title
 #
+# The prefix will use a Debian-style prompt on the form
+# [user@host: <truncated PWD>]
+#
 # Just source this file in addiion to gitprompt.sh to activate.
 #
 # Upstream: https://github.com/magicmonty/bash-git-prompt
