@@ -2,10 +2,13 @@
 
 # Exports a prefix to the bash-git-prompt using GIT_PROMPT_START 
 # that truncates pwd to a max length depending on the terminal column width. 
-# Also uses the prompt_callback function of bash-git-promot to set the 
+# Also uses the prompt_callback function of bash-git-prompt to set the 
 # window title
 #
-# https://github.com/magicmonty/bash-git-prompt
+# Just source this file in addiion to gitprompt.sh to activate.
+#
+# Upstream: https://github.com/magicmonty/bash-git-prompt
+# This repo: https://github.com/ogr3/bash-git-prompt
 #
 # oGre <oGre@muppfarmen.se> [http://github.com/ogr3]
 
