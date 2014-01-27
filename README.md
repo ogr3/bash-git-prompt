@@ -51,8 +51,8 @@ The symbols are as follows:
 
 1. Clone this repository to your homedir
    e.g. ``git clone https://github.com/magicmonty/bash-git-prompt.git .bash-git-prompt``
-2. Source the file ``gitprompt.sh`` from your ``~/.bashrc`` config file
-3. Source the file ``git-prompt-prefix.sh`` from your ``~/.bashrc`` config file
+2. Source the file ``git-prompt-prefix.sh`` from your ``~/.bashrc`` config file
+3. Source the file ``gitprompt.sh`` from your ``~/.bashrc`` config file
 4. Go in a git repository and test it!
 
 ## Configuration
