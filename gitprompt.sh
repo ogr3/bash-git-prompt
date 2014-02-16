@@ -97,8 +97,15 @@ function git_prompt_config()
     PROMPT_END="${GIT_PROMPT_END}"
   fi
 
+  # set GIT_PROMPT_LEADING_SPACE to 0 if you want to have no leading space in front of the GIT prompt
+  if [ "x${GIT_PROMPT_LEADING_SPACE}" == "x0" ]; then
+    PROMPT_LEADING_SPACE=""
+  else
+    PROMPT_LEADING_SPACE=" "
+  fi
+
   if [[ -n "${VIRTUAL_ENV}" ]]; then
-    EMPTY_PROMPT="${Blue}($(basename "${VIRTUAL_ENV}"))${ResetColor} ${PROMPT_START}$($prompt_callback)${PROMPT_END}"
+    EMPTY_PROMPT="(${Blue}$(basename "${VIRTUAL_ENV}")${ResetColor}) ${PROMPT_START}$($prompt_callback)${PROMPT_END}"
   else
     EMPTY_PROMPT="${PROMPT_START}$($prompt_callback)${PROMPT_END}"
   fi
@@ -166,13 +173,14 @@ function updatePrompt() {
   local GIT_PROMPT_UNTRACKED
   local GIT_PROMPT_STASHED
   local GIT_PROMPT_CLEAN
+  local PROMPT_LEADING_SPACE
   local PROMPT_START
   local PROMPT_END
   local EMPTY_PROMPT
-  local ResetColor
-  local Blue
   local GIT_PROMPT_FETCH_TIMEOUT
   local __GIT_STATUS_CMD
+
+  local Blue="\[\033[0;34m\]"
 
   git_prompt_config
 
@@ -192,7 +200,7 @@ function updatePrompt() {
   local GIT_CLEAN=${GitStatus[7]}
 
   if [[ -n "${GitStatus}" ]]; then
-    local STATUS=" ${GIT_PROMPT_PREFIX}${GIT_PROMPT_BRANCH}${GIT_BRANCH}${ResetColor}"
+    local STATUS="${PROMPT_LEADING_SPACE}${GIT_PROMPT_PREFIX}${GIT_PROMPT_BRANCH}${GIT_BRANCH}${ResetColor}"
 
     if [[ -n "${GIT_REMOTE}" ]]; then
       STATUS="${STATUS}${GIT_PROMPT_REMOTE}${GIT_REMOTE}${ResetColor}"
@@ -228,7 +236,7 @@ function updatePrompt() {
 
     PS1="${PROMPT_START}$($prompt_callback)${STATUS}${PROMPT_END}"
     if [[ -n "${VIRTUAL_ENV}" ]]; then
-      PS1="${Blue}($(basename "${VIRTUAL_ENV}"))${ResetColor} ${PS1}"
+      PS1="(${Blue}$(basename ${VIRTUAL_ENV})${ResetColor}) ${PS1}"
     fi
 
   else
@@ -259,4 +267,4 @@ else
 fi
 
 git_prompt_dir
-source $__GIT_PROMPT_DIR/git-prompt-help.sh
+source "$__GIT_PROMPT_DIR/git-prompt-help.sh"
