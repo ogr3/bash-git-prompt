@@ -55,23 +55,36 @@ The symbols are as follows:
 3. Source the file ``gitprompt.sh`` from your ``~/.bashrc`` config file
 4. Go in a git repository and test it!
 
+```sh
+   # some other config in .bashrc
+
+   # gitprompt configuration
+
+   # Set config variables first
+   GIT_PROMPT_ONLY_IN_REPO=1
+
+   # as last entry source the gitprompt script
+   source ~/.bash-git-prompt/gitprompt.sh
+```
+
+- Go in a git repository and test it!
+
 ## Configuration
 
-1. You can use ``GIT_PROMPT_START`` and ``GIT_PROMPT_END`` to tweak your prompt
-
-2. The default colors are defined within ``gitprompt.sh``, but may be
-   overridden by copying ``git-prompt-colors.sh`` to your home directory at
-   ``~/.git-prompt-colors.sh``.  This file may also be found in the same
+- The default colors and some variables for tweaking the prompt are defined 
+   within ``gitprompt.sh``, but may be overridden by copying ``git-prompt-colors.sh`` 
+   to your home directory at ``~/.git-prompt-colors.sh``.  This file may also be found in the same
    directory as ``gitprompt.sh``, but without the leading ``.``.
 
-3. The current git repo information is obtained by the script `gitstatus.sh` or
+- You can use ``GIT_PROMPT_START_USER``, ``GIT_PROMPT_START_ROOT``, ``GIT_PROMPT_END_USER`` and ``GIT_PROMPT_END_ROOT`` in your ``.git-prompt-colors.sh`` to tweak your prompt. You can also override the start and end of the prompt by setting ``GIT_PROMPT_START`` and ``GIT_PROMPT_END`` before you source the ``gitprompt.sh``
+
+- The current git repo information is obtained by the script `gitstatus.sh` or
    `gitstatus.py`.  Both scripts do the same thing, but the bash script is a
    tad more quick, and is used by default.  If you prefer the python script
    (possibly because you have enhanced it), simply delete or change the name of
    ``gitstatus.sh``.
 
-4. You can define ``prompt_callback`` function to tweak your prompt dynamically.
-
+- You can define ``prompt_callback`` function to tweak your prompt dynamically.
 ```sh
 function prompt_callback {
     if [ `jobs | wc -l` -ne 0 ]; then
@@ -80,7 +93,9 @@ function prompt_callback {
 }
 ```
 
-5.  You can get help on the git prompt with the function ``git_prompt_help``.
+- If you want to show the git prompt only, if you are in a git repository you can set ``GIT_PROMPT_ONLY_IN_REPO=1`` before sourcing the gitprompt script
+
+-  You can get help on the git prompt with the function ``git_prompt_help``.
     Examples are available with ``git_prompt_examples``.
 
 **Enjoy!**
