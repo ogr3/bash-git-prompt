@@ -100,7 +100,7 @@ function git_prompt_config()
     # Please do not add colors to these symbols
     GIT_PROMPT_SYMBOLS_AHEAD="↑·"
     GIT_PROMPT_SYMBOLS_BEHIND="↓·"
-    GIT_PROMPT_SYMBOLS_PREHASH=":"    
+    GIT_PROMPT_SYMBOLS_PREHASH=":"
   fi
 
   if [ "x${GIT_PROMPT_SHOW_LAST_COMMAND_INDICATOR}" == "x1" ]; then
@@ -183,7 +183,19 @@ function setGitPrompt() {
     return
   fi
 
-  checkUpstream
+  local FETCH_REMOTE_STATUS=1
+  if [[ "x${GIT_PROMPT_FETCH_REMOTE_STATUS}" == "x0" ]]; then
+    FETCH_REMOTE_STATUS=0
+  fi
+
+  if [[ -e "${repo}/.bash-git-rc" ]]; then
+  	source "${repo}/.bash-git-rc"
+  fi
+
+  if [ "x${FETCH_REMOTE_STATUS}" == "x1" ]; then
+  	checkUpstream
+  fi
+
   updatePrompt
 }
 
