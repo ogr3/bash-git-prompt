@@ -1,17 +1,5 @@
 # These are the color definitions used by gitprompt.sh
 
-declare -g GIT_PROMPT_PREFIX
-declare -g GIT_PROMPT_SUFFIX
-declare -g GIT_PROMPT_SEPARATOR
-declare -g GIT_PROMPT_BRANCH
-declare -g GIT_PROMPT_STAGED
-declare -g GIT_PROMPT_CONFLICTS
-declare -g GIT_PROMPT_CHANGED
-declare -g GIT_PROMPT_REMOTE
-declare -g GIT_PROMPT_UNTRACKED
-declare -g GIT_PROMPT_STASHED
-declare -g GIT_PROMPT_CLEAN
-
 local Time12a="\$(date +%H:%M)"
 local PathShort="\w"
 
@@ -29,6 +17,12 @@ GIT_PROMPT_REMOTE=" "                 # the remote branch name (if any) and the 
 GIT_PROMPT_UNTRACKED="${Cyan}…"       # the number of untracked files/dirs
 GIT_PROMPT_STASHED="${BoldBlue}⚑ "    # the number of stashed files/dir
 GIT_PROMPT_CLEAN="${BoldGreen}✔"      # a colored flag indicating a "clean" repo
+
+# For the command indicator, the placeholder _LAST_COMMAND_STATE_ 
+# will be replaced with the exit code of the last command
+# e.g.
+# GIT_PROMPT_COMMAND_OK="${Green}✔-_LAST_COMMAND_STATE_ "    # indicator if the last command returned with an exit code of 0
+# GIT_PROMPT_COMMAND_FAIL="${Red}✘-_LAST_COMMAND_STATE_ "   # indicator if the last command returned with an exit code of other than 0
 
 GIT_PROMPT_COMMAND_OK="${Green}✔ "    # indicator if the last command returned with an exit code of 0
 GIT_PROMPT_COMMAND_FAIL="${Red}✘ "   # indicator if the last command returned with an exit code of other than 0
