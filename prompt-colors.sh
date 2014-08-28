@@ -6,7 +6,7 @@
 
 define_color_names() {
 
-  ColorNames=( Black Red Green Yellow Blue Magneta Cyan White )
+  ColorNames=( Black Red Green Yellow Blue Magenta Cyan White )
   FgColors=(    30   31   32    33     34   35      36   37  )
   BgColors=(    40   41   42    43     44   45      46   47  )
 
@@ -76,7 +76,11 @@ define_color_names() {
   _def_color ResetColor   0 0
 
 }
-define_color_names
+
+# do the color definitions only once
+if [[ ${#ColorNames[*]} = 0 || -z "$IntenseBlack" || -z "$ResetColor" ]]; then
+  define_color_names
+fi
 
 # end of prompt-colors.sh
 # vim: set ai sw=2
