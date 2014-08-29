@@ -13,6 +13,13 @@
 # Upstream: https://github.com/magicmonty/bash-git-prompt
 # This repo: https://github.com/ogr3/bash-git-prompt
 #
+# Add to .bashrc:
+# 
+# if [ -f ~/.bash-git-prompt/gitprompt.sh ] &&  [ -f ~/.bash-git-prompt/git-prompt-prefix.sh ]; then
+#  source ~/.bash-git-prompt/git-prompt-prefix.sh
+#  source ~/.bash-git-prompt/gitprompt.sh
+# fi
+#
 # oGre <oGre@muppfarmen.se> [http://github.com/ogr3]
 
 #Sets the window title to the given argument string
