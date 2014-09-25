@@ -23,13 +23,19 @@ define_git_prompt_colors() {
   # will be replaced with the exit code of the last command
   # e.g.
   # GIT_PROMPT_COMMAND_OK="${Green}✔-_LAST_COMMAND_STATE_ "    # indicator if the last command returned with an exit code of 0
-  # GIT_PROMPT_COMMAND_FAIL="${Red}✘-_LAST_COMMAND_STATE_ "   # indicator if the last command returned with an exit code of other than 0
+  # GIT_PROMPT_COMMAND_FAIL="${Red}✘-_LAST_COMMAND_STATE_ "    # indicator if the last command returned with an exit code of other than 0
 
-  GIT_PROMPT_COMMAND_OK="${Green}✔ "    # indicator if the last command returned with an exit code of 0
-  GIT_PROMPT_COMMAND_FAIL="${Red}✘ "   # indicator if the last command returned with an exit code of other than 0
+  GIT_PROMPT_COMMAND_OK="${Green}✔"    # indicator if the last command returned with an exit code of 0
+  GIT_PROMPT_COMMAND_FAIL="${Red}✘"    # indicator if the last command returned with an exit code of other than 0
 
-  GIT_PROMPT_START_USER="${Yellow}${PathShort}${ResetColor}"
-  GIT_PROMPT_START_ROOT="${Yellow}${PathShort}${ResetColor}"
+  # template for displaying the current virtual environment
+  # use the placeholder _VIRTUALENV_ will be replaced with 
+  # the name of the current virtual environment (currently CONDA and VIRTUAL_ENV)
+  GIT_PROMPT_VIRTUALENV="(${Blue}_VIRTUALENV_${ResetColor}) "
+  
+  # _LAST_COMMAND_INDICATOR_ will be replaced by the appropriate GIT_PROMPT_COMMAND_OK OR GIT_PROMPT_COMMAND_FAIL
+  GIT_PROMPT_START_USER="_LAST_COMMAND_INDICATOR_ ${Yellow}${PathShort}${ResetColor}"
+  GIT_PROMPT_START_ROOT="_LAST_COMMAND_INDICATOR_ ${GIT_PROMPT_START_USER}"
   GIT_PROMPT_END_USER=" \n${White}${Time12a}${ResetColor} $ "
   GIT_PROMPT_END_ROOT=" \n${White}${Time12a}${ResetColor} # "
 

@@ -18,6 +18,11 @@ if you have one. It now contains a function named ``define_git_prompt_colors()``
 
 **Please see the updated ``git-prompt-colors.sh`` in the installation directory!**
 
+---
+
+**The variable `GIT_PROMPT_SHOW_LAST_COMMAND_INDICATOR` was replaced with a more general placeholder 
+named ``_LAST_COMMAND_INDICATOR_``, which is replaced by the state of the last executed command. It is now activated by default.**
+
 ## Examples
 
 The prompt may look like the following:
@@ -54,19 +59,35 @@ The symbols are as follows:
 - Branch Symbol:<br />
   	When the branch name starts with a colon ``:``, it means it's actually a hash, not a branch (although it should be pretty clear, unless you name your branches like hashes :-)
 
-## Install
+## Installation
 
+### via [Homebrew][homebrew] on Mac OS X
 
-1. Clone this repository to your home directory.
+- Run `brew update`
 
-    git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt
+- Run `brew install bash-git-prompt` for the last stable release or `brew install --HEAD bash-git-prompt` for the 
+   latest version directly from the repository
 
-2. Source the file ``git-prompt-prefix.sh`` from your ``~/.bashrc`` config file
+- Now you can source the file in your `~/.bashrc` as follows:
 
-3. Source the file `gitprompt.sh` from `~/.bashrc`
+```sh
+if [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
+    source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
+fi
+```
 
-4. `cd` to a git repository and test it!
+### via Git clone
 
+- Clone this repository to your home directory.
+
+```sh
+cd ~
+git clone https://github.com/magicmonty/bash-git-prompt.git .bash-git-prompt
+```
+
+- Source the file `gitprompt.sh` from `~/.bashrc`
+
+### Configuration
 
 ```sh
    # some other config in .bashrc
@@ -75,17 +96,18 @@ The symbols are as follows:
 
    # Set config variables first
    GIT_PROMPT_ONLY_IN_REPO=1
-
+   
    # GIT_PROMPT_FETCH_REMOTE_STATUS=0   # uncomment to avoid fetching remote status
 
    # GIT_PROMPT_START=...    # uncomment for custom prompt start sequence
    # GIT_PROMPT_END=...      # uncomment for custom prompt end sequence
 
-   # as last entry source the gitprompt script
+   # as last entry source the git-prompt-prefix and gitprompt scripts
+   source ~/.bash-git-prompt/git-prompt-prefix.sh
    source ~/.bash-git-prompt/gitprompt.sh
 ```
 
-- Go in a git repository and test it!
+- `cd` to a git repository and test it!
 
 - You can define `GIT_PROMPT_START` and `GIT_PROMPT_END` to tweak your prompt.
 
@@ -121,10 +143,16 @@ function prompt_callback {
 - If you want to show the git prompt only if you are in a git repository you
   can set ``GIT_PROMPT_ONLY_IN_REPO=1`` before sourcing the gitprompt script
 
-- You can show an additional indicator at the start of the prompt, which shows
-  the result of the last executed command by setting
-  ``GIT_PROMPT_SHOW_LAST_COMMAND_INDICATOR=1`` before sourcing the gitprompt
-  script. 
+- There is an indicator at the start of the prompt, which shows
+  the result of the last executed command by if you put the placeholder
+  `_LAST_COMMAND_INDICATOR_` in any of the prompt templates. 
+  It is now by default activated in the default `git-prompt-colors.sh`:
+
+```sh
+  GIT_PROMPT_START_USER="_LAST_COMMAND_INDICATOR_ ${Yellow}${PathShort}${ResetColor}"
+  GIT_PROMPT_START_ROOT="_LAST_COMMAND_INDICATOR_ ${GIT_PROMPT_START_USER}"
+```
+
   If you want to display the exit code too, you can use the placeholder
   ``_LAST_COMMAND_STATE_`` in ``GIT_PROMPT_COMMAND_OK`` or ``GIT_PROMPT_COMMAND_FAIL``
   in your ``.git-prompt-colors.sh``:
@@ -141,6 +169,7 @@ GIT_PROMPT_COMMAND_FAIL="${Red}✘-_LAST_COMMAND_STATE_ " # displays as ✘-1 fo
 
 - You can get help on the git prompt with the function ``git_prompt_help``.
   Examples are available with ``git_prompt_examples``.
+  A list of all available named colors is available with `git_prompt_color_samples`
 
 - If you make any changes to any file that is sourced by `gitprompt.sh`, you
   should run this command, so that the next prompt update will find all the
@@ -199,8 +228,6 @@ rpmbuild -ta bash-git-prompt-xxx.tar.gz
 ````
 Then you may publish or install the rpm from "~/rpmbuild/RPMS/noarch".
 
-[blog post]: http://sebastiancelis.com/2009/nov/16/zsh-prompt-git-users/
-
 ## License
 This code is under the [BSD 2 Clause (NetBSD) license][license].
 
@@ -213,7 +240,9 @@ I accept tips through [Gittip][tip] and [Flattr][flattr].
 [![Gittip](https://img.shields.io/gittip/magicmonty.svg?style=flat)](https://www.gittip.com/magicmonty/)
 [![Flattr](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=magicmonty&url=https%3A%2F%2Fgithub.com%2Fmagicmonty%2Fbash-git-prompt)
 
+[blog post]: http://sebastiancelis.com/2009/nov/16/zsh-prompt-git-users/
 [tip]:https://www.gittip.com/magicmonty/
 [magicmonty]: http://blog.pagansoft.de/pages/about.html
 [license]:https://github.com/magicmonty/bash-git-prompt/tree/master/LICENSE.txt
 [flattr]: https://flattr.com/submit/auto?user_id=magicmonty&url=https%3A%2F%2Fgithub.com%2Fmagicmonty%2Fbash-git-prompt
+[homebrew]: http://brew.sh/

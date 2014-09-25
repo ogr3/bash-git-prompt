@@ -105,16 +105,14 @@ function git_prompt_config()
     echo 1>&2 "Cannot find git-prompt-colors.sh!"
   fi
 
-  if [ "$GIT_PROMPT_SHOW_LAST_COMMAND_INDICATOR" = 1 ]; then
-    if [ $GIT_PROMPT_LAST_COMMAND_STATE = 0 ]; then
-      LAST_COMMAND_INDICATOR="$GIT_PROMPT_COMMAND_OK";
-    else
-      LAST_COMMAND_INDICATOR="$GIT_PROMPT_COMMAND_FAIL";
-    fi
-
-    # replace _LAST_COMMAND_STATE_ token with the actual state
-    LAST_COMMAND_INDICATOR="${LAST_COMMAND_INDICATOR/_LAST_COMMAND_STATE_/${GIT_PROMPT_LAST_COMMAND_STATE}}"
+  if [ $GIT_PROMPT_LAST_COMMAND_STATE = 0 ]; then
+    LAST_COMMAND_INDICATOR="$GIT_PROMPT_COMMAND_OK";
+  else
+    LAST_COMMAND_INDICATOR="$GIT_PROMPT_COMMAND_FAIL";
   fi
+
+  # replace _LAST_COMMAND_STATE_ token with the actual state
+  LAST_COMMAND_INDICATOR="${LAST_COMMAND_INDICATOR/_LAST_COMMAND_STATE_/${GIT_PROMPT_LAST_COMMAND_STATE}}"
 
   # Do this only once to define PROMPT_START and PROMPT_END
 
@@ -157,13 +155,17 @@ function git_prompt_config()
   if [[ "$GIT_PROMPT_ONLY_IN_REPO" = 1 ]]; then
     EMPTY_PROMPT="$OLD_GITPROMPT"
   else
-    local ps="$LAST_COMMAND_INDICATOR"
+    local ps=""
     if [[ -n "$VIRTUAL_ENV" ]]; then
-      ps="$ps($Blue$(basename \"$VIRTUAL_ENV\")$ResetColor) "
-    elif [[ -n "$CONDA_DEFAULT_ENV" ]]; then
-      ps="$ps($Blue$(basename \"$CONDA_DEFAULT_ENV\")$ResetColor) "
+      VENV=$(basename "${VIRTUAL_ENV}")
+      ps="${ps}${GIT_PROMPT_VIRTUALENV/_VIRTUALENV_/${VENV}}"
     fi
-    EMPTY_PROMPT="$ps$PROMPT_START$($prompt_callback)$PROMPT_END"
+    if [[ -n "$CONDA_DEFAULT_ENV" ]]; then
+      VENV=$(basename "${CONDA_DEFAULT_ENV}")
+      ps="${ps}${GIT_PROMPT_VIRTUALENV/_VIRTUALENV_/${VENV}}"
+    fi
+    ps="$ps$PROMPT_START$($prompt_callback)$PROMPT_END"
+    EMPTY_PROMPT="${ps/_LAST_COMMAND_INDICATOR_/${LAST_COMMAND_INDICATOR}}"
   fi
 
   # fetch remote revisions every other $GIT_PROMPT_FETCH_TIMEOUT (default 5) minutes
@@ -251,6 +253,7 @@ function updatePrompt() {
   local GIT_STASHED=${GitStatus[6]}
   local GIT_CLEAN=${GitStatus[7]}
 
+  local NEW_PROMPT="$EMPTY_PROMPT"
   if [[ -n "$GitStatus" ]]; then
     local STATUS="${PROMPT_LEADING_SPACE}${GIT_PROMPT_PREFIX}${GIT_PROMPT_BRANCH}${GIT_BRANCH}${ResetColor}"
 
@@ -292,18 +295,23 @@ function updatePrompt() {
     __chk_gitvar_status 'CLEAN'      '-eq 1'   -
     __add_status        "$ResetColor$GIT_PROMPT_SUFFIX"
 
-    PS1="$LAST_COMMAND_INDICATOR$PROMPT_START$($prompt_callback)$STATUS$PROMPT_END"
+    NEW_PROMPT=""
     if [[ -n "$VIRTUAL_ENV" ]]; then
-      PS1="($Blue$(basename \"$VIRTUAL_ENV\")$ResetColor) $PS1"
+      VENV=$(basename "${VIRTUAL_ENV}")
+      NEW_PROMPT="$NEW_PROMPT${GIT_PROMPT_VIRTUALENV/_VIRTUALENV_/${VENV}}"
     fi
 
     if [[ -n "$CONDA_DEFAULT_ENV" ]]; then
-      PS1="($Blue$(basename \"$CONDA_DEFAULT_ENV\")$ResetColor) $PS1"
+      VENV=$(basename "${CONDA_DEFAULT_ENV}")
+      NEW_PROMPT="$NEW_PROMPT${GIT_PROMPT_VIRTUALENV/_VIRTUALENV_/${VENV}}"
     fi
 
+    NEW_PROMPT="$NEW_PROMPT$PROMPT_START$($prompt_callback)$STATUS$PROMPT_END"
   else
-    PS1="$EMPTY_PROMPT"
+    NEW_PROMPT="$EMPTY_PROMPT"
   fi
+
+  PS1="${NEW_PROMPT/_LAST_COMMAND_INDICATOR_/${LAST_COMMAND_INDICATOR}}"
 }
 
 function prompt_callback_default {
@@ -339,18 +347,16 @@ function gp_install_prompt {
     esac
   fi
 
-  if [ "$GIT_PROMPT_SHOW_LAST_COMMAND_INDICATOR" = 1 ]; then
-    local setLastCommandStateEntry="setLastCommandState"
-    case ";$PROMPT_COMMAND;" in
-      *";$setLastCommandStateEntry;"*)
-        # echo "PROMPT_COMMAND already contains: $setLastCommandStateEntry"
-        :;;
-      *)
-        PROMPT_COMMAND="$setLastCommandStateEntry;$PROMPT_COMMAND"
-        # echo "PROMPT_COMMAND does not contain: $setLastCommandStateEntry"
-        ;;
-    esac
-  fi
+  local setLastCommandStateEntry="setLastCommandState"
+  case ";$PROMPT_COMMAND;" in
+    *";$setLastCommandStateEntry;"*)
+      # echo "PROMPT_COMMAND already contains: $setLastCommandStateEntry"
+      :;;
+    *)
+      PROMPT_COMMAND="$setLastCommandStateEntry;$PROMPT_COMMAND"
+      # echo "PROMPT_COMMAND does not contain: $setLastCommandStateEntry"
+      ;;
+  esac
 
   git_prompt_dir
   source "$__GIT_PROMPT_DIR/git-prompt-help.sh"
