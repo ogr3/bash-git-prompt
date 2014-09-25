@@ -82,10 +82,10 @@ fi
 
 ```sh
 cd ~
-git clone https://github.com/magicmonty/bash-git-prompt.git .bash-git-prompt
+git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt
 ```
 
-- Source the file `gitprompt.sh` from `~/.bashrc`
+- Source the files `git-prompt-prefix.sh` and `gitprompt.sh` from `~/.bashrc`
 
 ### Configuration
 
