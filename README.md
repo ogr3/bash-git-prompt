@@ -13,10 +13,27 @@ staged, changed, etc.
 
 # ATTENTION! Breaking changes!
 
-**If you use this prompt already, please update your ``.git-prompt-colors.sh``, 
-if you have one. It now contains a function named ``define_git_prompt_colors()``!**
+**If you use this prompt already, please update your `.git-prompt-colors.sh`, 
+if you have one. It now contains a function named `define_git_prompt_colors()` or `override_git_prompt_colors()`!**
 
-**Please see the updated ``git-prompt-colors.sh`` in the installation directory!**
+**Please see the ``Custom.bgptemplate`` in the ``themes`` subdirectory of the installation directory!**
+
+**You can now also use the function `override_git_prompt_colors()`. It should define the variable `GIT_PROMPT_THEME_NAME`
+and call the function `reload_git_prompt_colors <ThemeName>` like follows:**
+
+```sh
+override_git_prompt_colors() {
+  GIT_PROMPT_THEME_NAME="Custom" # needed for reload optimization, should be unique
+  
+  # Place your overrides here
+  ...
+}
+
+# load the theme
+reload_git_prompt_colors "Custom"
+```
+
+The advantage of this approach is, that you only need to specify the parts, that are different to the Default theme.
 
 ---
 
@@ -103,17 +120,63 @@ git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt
    # GIT_PROMPT_END=...      # uncomment for custom prompt end sequence
 
    # as last entry source the git-prompt-prefix and gitprompt scripts
+   # GIT_PROMPT_THEME=Custom # use custom .git-prompt-colors.sh
+   # GIT_PROMPT_THEME=Solarized # use theme optimized for solarized color scheme
    source ~/.bash-git-prompt/git-prompt-prefix.sh
    source ~/.bash-git-prompt/gitprompt.sh
 ```
 
 - `cd` to a git repository and test it!
 
+#### Themes
+
+The most settings are now stored in theme files. To select a theme, set the variable `GIT_PROMPT_THEME` to the name
+of the theme located in `<INSTALLDIR>/themes` without the extension `.bgptheme` like this:
+
+```sh
+GIT_PROMPT_THEME=Solarized
+```
+
+If you set `GIT_PROMPT_THEME` to `Custom`, then the `.git-prompt-colors.sh` in the home directory will be used.
+This file can now be generated with the command `git_prompt_make_custom_theme [<Name of base theme>]`. If the name of 
+the base theme is ommitted or the theme file is not found, then the Default theme is used. If you have already a custom
+`.git-prompt-colors.sh` in your home directory, a error message will be shown.
+
+You can display a list of available themes with `git_prompt_list_themes` (the current theme is highlighted)
+
+**If you omit the `GIT_PROMPT_THEME` variable, the Default theme is used or, if you have a custom `.git-prompt-colors.sh`
+in your home directory, then the Custom theme is used.**
+
+##### Theme structure
+
+Please see the ``Custom.bgptemplate`` in the ``themes`` subdirectory of the installation directory!
+
+A theme consists of a function `override_git_prompt_colors()` which defines at least the variable `GIT_PROMPT_THEME_NAME`
+ with a unique theme identifier and a call to the function `reload_git_prompt_colors <ThemeName>` like follows:
+
+```sh
+override_git_prompt_colors() {
+  GIT_PROMPT_THEME_NAME="Custom" # needed for reload optimization, should be unique
+  
+  # Place your overrides here
+  ...
+}
+
+# load the theme
+reload_git_prompt_colors "Custom"
+```
+
+The advantage of this approach is, that you only need to specify the parts, that are different to the Default theme.
+
+If you use a custom theme in `.git-prompt-colors.sh`, please set `GIT_PROMPT_THEME_NAME="Custom"`.
+
+#### Further customizations
+
 - You can define `GIT_PROMPT_START` and `GIT_PROMPT_END` to tweak your prompt.
 
 - The default colors are defined within `prompt-colors.sh`, which is sourced by
   `gitprompt.sh`.  The colors used for various git status are defined in
-  `git-prompt-colors.sh`.  Both of these files may be overridden by copying
+  `themes/Default.bgptheme`.  Both of these files may be overridden by copying
   them to $HOME with a `.` prefix.  They can also be placed in `$HOME/lib`
   without the leading `.`.  The defaults are the original files in the
   `~/.bash-git-prompt` directory.
@@ -146,7 +209,7 @@ function prompt_callback {
 - There is an indicator at the start of the prompt, which shows
   the result of the last executed command by if you put the placeholder
   `_LAST_COMMAND_INDICATOR_` in any of the prompt templates. 
-  It is now by default activated in the default `git-prompt-colors.sh`:
+  It is now by default activated in the default theme:
 
 ```sh
   GIT_PROMPT_START_USER="_LAST_COMMAND_INDICATOR_ ${Yellow}${PathShort}${ResetColor}"
@@ -158,7 +221,7 @@ function prompt_callback {
   in your ``.git-prompt-colors.sh``:
 
 ```sh
-GIT_PROMPT_COMMAND_OK="${Green}✔-_LAST_COMMAND_STATE_ " # displays as ✔-0
+GIT_PROMPT_COMMAND_OK="${Green}✔ " # displays as ✔
 GIT_PROMPT_COMMAND_FAIL="${Red}✘-_LAST_COMMAND_STATE_ " # displays as ✘-1 for exit code 1
 ``` 
 
@@ -198,10 +261,10 @@ from scratch by following this procedure:
 * Run the following command to create a tarball:
 
 ````sh
-    VER1=$(git describe)
+    VER=$(git describe)
     # replace dash with underscore to work around
     # rpmbuild does not allow dash in version string
-    VER=${VER1//\-/_}
+    VER=${VER//\-/_}
     git archive                                \
         --format tar                           \
         --prefix=bash-git-prompt-${VER}/       \
@@ -210,6 +273,7 @@ from scratch by following this procedure:
             *.py                               \
             *.fish                             \
             README.md                          \
+            themes                             \
       > bash-git-prompt-${VER}.tar
     mkdir -p /tmp/bash-git-prompt-${VER}
     sed "s/Version:.*/Version:        ${VER}/"          \
@@ -237,6 +301,12 @@ This code is under the [BSD 2 Clause (NetBSD) license][license].
 ## Who Are You?
 The current maintainer of the original bash-git-prompt is [Martin Gondermann][magicmonty].
 
+## Contributing
+If you want to contribute you can look for issues with the label [up-for-grabs][upforgrabs].
+Please leave a comment on the issue, that you want to fix it, so others know, the labels are "taken".
+
+Pull requests are welcome. I will check them and merge them, if I think they help the project.
+
 ## Donations
 I accept tips through [Gittip][tip] and [Flattr][flattr].
 
@@ -249,3 +319,4 @@ I accept tips through [Gittip][tip] and [Flattr][flattr].
 [license]:https://github.com/magicmonty/bash-git-prompt/tree/master/LICENSE.txt
 [flattr]: https://flattr.com/submit/auto?user_id=magicmonty&url=https%3A%2F%2Fgithub.com%2Fmagicmonty%2Fbash-git-prompt
 [homebrew]: http://brew.sh/
+[upforgrabs]: https://github.com/magicmonty/bash-git-prompt/labels/up-for-grabs
