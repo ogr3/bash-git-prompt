@@ -3,7 +3,7 @@
 function async_run()
 {
   {
-    $1 &> /dev/null
+    eval "$@" &> /dev/null
   }&
 }
 
@@ -185,6 +185,24 @@ git_prompt_reset() {
   done
 }
 
+# gp_format_exit_status RETVAL
+#
+# echos the symbolic signal name represented by RETVAL if the process was 
+# signalled, otherwise echos the original value of RETVAL
+
+gp_format_exit_status() {
+    local RETVAL="$1"
+    local SIGNAL
+    # Suppress STDERR in case RETVAL is not an integer (in such cases, RETVAL 
+    # is echoed verbatim)
+    if [ "${RETVAL}" -gt 128 ] 2>/dev/null; then
+        SIGNAL=$(( ${RETVAL} - 128 ))
+        kill -l "${SIGNAL}" 2>/dev/null || echo "${RETVAL}"
+    else
+        echo "${RETVAL}"
+    fi
+}
+
 function git_prompt_config()
 {
   #Checking if root to change output
@@ -214,6 +232,7 @@ function git_prompt_config()
   fi
 
   # replace _LAST_COMMAND_STATE_ token with the actual state
+  GIT_PROMPT_LAST_COMMAND_STATE=$(gp_format_exit_status ${GIT_PROMPT_LAST_COMMAND_STATE})
   LAST_COMMAND_INDICATOR="${LAST_COMMAND_INDICATOR//_LAST_COMMAND_STATE_/${GIT_PROMPT_LAST_COMMAND_STATE}}"
 
   # Do this only once to define PROMPT_START and PROMPT_END
@@ -338,13 +357,55 @@ function setGitPrompt() {
   updatePrompt
 }
 
+# some versions of find do not have -mmin
+_have_find_mmin=1
+
+function olderThanMinutes() {
+    local matches
+    local find_exit_code
+
+    if [[ -z "$_find_command" ]]; then
+        if command -v gfind > /dev/null; then
+            _find_command=gfind
+        else
+            _find_command=find
+        fi
+    fi
+
+    if [[ "$_have_find_mmin" = 1 ]]; then
+        matches=`"$_find_command" "$1" -mmin +"$2" 2> /dev/null`
+        find_exit_code="$?"
+        if [[ -n "$matches" ]]; then
+            return 0
+        else
+            if [[ "$find_exit_code" != 0 ]]; then
+                _have_find_mmin=0
+            else
+                return 1
+            fi
+        fi
+    fi
+
+    # try perl, solaris ships with perl
+    if command -v perl > /dev/null; then
+        perl -e '((time - (stat("'"$1"'"))[9]) / 60) > '"$2"' && exit(0) || exit(1)'
+        return "$?"
+    else
+        echo >&2
+        echo "[1;31mWARNING[0m: neither a find that supports -mmin (such as GNU find) or perl is available, disabling remote status checking. Install GNU find as gfind or perl to enable this feature, or set GIT_PROMPT_FETCH_REMOTE_STATUS=0 to disable this warning." >&2
+        echo >&2
+        GIT_PROMPT_FETCH_REMOTE_STATUS=0
+        return 1
+    fi
+}
+
 function checkUpstream() {
   local GIT_PROMPT_FETCH_TIMEOUT
   git_prompt_config
 
   local FETCH_HEAD="$repo/.git/FETCH_HEAD"
   # Fech repo if local is stale for more than $GIT_FETCH_TIMEOUT minutes
-  if [[ ! -e "$FETCH_HEAD"  ||  -e `find "$FETCH_HEAD" -mmin +$GIT_PROMPT_FETCH_TIMEOUT` ]]
+  if [[ ! -e "$FETCH_HEAD" ]] || olderThanMinutes "$FETCH_HEAD" "$GIT_PROMPT_FETCH_TIMEOUT"
   then
     if [[ -n $(git remote show) ]]; then
       (
