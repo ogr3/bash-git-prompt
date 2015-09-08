@@ -1,5 +1,7 @@
 # Informative git prompt for bash and fish
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/magicmonty/bash-git-prompt?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 This prompt is a port of the "Informative git prompt for zsh" which you can
 find [here](https://github.com/olivierverdier/zsh-git-prompt)
 
@@ -13,7 +15,7 @@ staged, changed, etc.
 
 # ATTENTION! Breaking changes!
 
-**If you use this prompt already, please update your `.git-prompt-colors.sh`, 
+**If you use this prompt already, please update your `.git-prompt-colors.sh`,
 if you have one. It now contains a function named `define_git_prompt_colors()` or `override_git_prompt_colors()`!**
 
 **Please see the ``Custom.bgptemplate`` in the ``themes`` subdirectory of the installation directory!**
@@ -24,7 +26,7 @@ and call the function `reload_git_prompt_colors <ThemeName>` like follows:**
 ```sh
 override_git_prompt_colors() {
   GIT_PROMPT_THEME_NAME="Custom" # needed for reload optimization, should be unique
-  
+
   # Place your overrides here
   ...
 }
@@ -37,7 +39,7 @@ The advantage of this approach is, that you only need to specify the parts, that
 
 ---
 
-**The variable `GIT_PROMPT_SHOW_LAST_COMMAND_INDICATOR` was replaced with a more general placeholder 
+**The variable `GIT_PROMPT_SHOW_LAST_COMMAND_INDICATOR` was replaced with a more general placeholder
 named ``_LAST_COMMAND_INDICATOR_``, which is replaced by the state of the last executed command. It is now activated by default.**
 
 ## Examples
@@ -83,10 +85,10 @@ The symbols are as follows:
 
 - Run `brew update`
 
-- Run `brew install bash-git-prompt` for the last stable release or `brew install --HEAD bash-git-prompt` for the 
+- Run `brew install bash-git-prompt` for the last stable release or `brew install --HEAD bash-git-prompt` for the
    latest version directly from the repository
 
-- Now you can source the file in your `~/.bashrc` as follows:
+- Now you can source the file in your `~/.bash_profile` as follows:
 
 ```sh
 if [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
@@ -114,7 +116,7 @@ git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt
 
    # Set config variables first
    GIT_PROMPT_ONLY_IN_REPO=1
-   
+
    # GIT_PROMPT_FETCH_REMOTE_STATUS=0   # uncomment to avoid fetching remote status
 
    # GIT_PROMPT_START=...    # uncomment for custom prompt start sequence
@@ -139,7 +141,7 @@ GIT_PROMPT_THEME=Solarized
 ```
 
 If you set `GIT_PROMPT_THEME` to `Custom`, then the `.git-prompt-colors.sh` in the home directory will be used.
-This file can now be generated with the command `git_prompt_make_custom_theme [<Name of base theme>]`. If the name of 
+This file can now be generated with the command `git_prompt_make_custom_theme [<Name of base theme>]`. If the name of
 the base theme is ommitted or the theme file is not found, then the Default theme is used. If you have already a custom
 `.git-prompt-colors.sh` in your home directory, a error message will be shown.
 
@@ -158,7 +160,7 @@ A theme consists of a function `override_git_prompt_colors()` which defines at l
 ```sh
 override_git_prompt_colors() {
   GIT_PROMPT_THEME_NAME="Custom" # needed for reload optimization, should be unique
-  
+
   # Place your overrides here
   ...
 }
@@ -204,7 +206,7 @@ function prompt_callback {
 
 - There is an indicator at the start of the prompt, which shows
   the result of the last executed command by if you put the placeholder
-  `_LAST_COMMAND_INDICATOR_` in any of the prompt templates. 
+  `_LAST_COMMAND_INDICATOR_` in any of the prompt templates.
   It is now by default activated in the default theme:
 
 ```sh
@@ -219,7 +221,7 @@ function prompt_callback {
 ```sh
 GIT_PROMPT_COMMAND_OK="${Green}✔ " # displays as ✔
 GIT_PROMPT_COMMAND_FAIL="${Red}✘-_LAST_COMMAND_STATE_ " # displays as ✘-1 for exit code 1
-``` 
+```
 
 - It is now possible to disable the fetching of the remote repository either
   globally by setting ``GIT_PROMPT_FETCH_REMOTE_STATUS=0`` in your .bashrc or
@@ -303,9 +305,8 @@ Please leave a comment on the issue, that you want to fix it, so others know, th
 Pull requests are welcome. I will check them and merge them, if I think they help the project.
 
 ## Donations
-I accept tips through [Gittip][tip] and [Flattr][flattr].
+I accept tips through [Flattr][flattr].
 
-[![Gittip](https://img.shields.io/gittip/magicmonty.svg?style=flat)](https://www.gittip.com/magicmonty/)
 [![Flattr](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=magicmonty&url=https%3A%2F%2Fgithub.com%2Fmagicmonty%2Fbash-git-prompt)
 
 [blog post]: http://sebastiancelis.com/2009/nov/16/zsh-prompt-git-users/

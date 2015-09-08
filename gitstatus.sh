@@ -19,10 +19,13 @@ if [ -z "${__GIT_PROMPT_DIR}" ]; then
   __GIT_PROMPT_DIR="$( cd -P "$( dirname "${SOURCE}" )" && pwd )"
 fi
 
-branch=`git symbolic-ref HEAD --short`
+gitsym=`git symbolic-ref HEAD`
 
 # if "fatal: Not a git repo .., then exit
-case "$branch" in fatal*) exit 0 ;; esac
+case "$gitsym" in fatal*) exit 0 ;; esac
+
+# the current branch is the tail end of the symbolic reference
+branch="${gitsym##refs/heads/}"    # get the basename after "refs/heads/"
 
 gitstatus=`git diff --name-status 2>&1`
 
@@ -75,7 +78,7 @@ else
   # detect if the local branch have a remote tracking branch
   cmd_output=$(git rev-parse --abbrev-ref ${branch}@{upstream} 2>&1 >/dev/null)
 
-  if [ `count_lines "$cmd_output" "fatal: No upstream"` == 1 ] ; then
+  if [ `count_lines "$cmd_output" "fatal: no upstream"` == 1 ] ; then
     has_remote_tracking=0
   else
     has_remote_tracking=1
