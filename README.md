@@ -104,9 +104,6 @@ fi
 cd ~
 git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt
 ```
-
-- Source the files `git-prompt-prefix.sh` and `gitprompt.sh` from `~/.bashrc`
-
 ### Configuration
 
 ```sh
@@ -115,7 +112,7 @@ git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt
    # gitprompt configuration
 
    # Set config variables first
-   GIT_PROMPT_ONLY_IN_REPO=1
+   # GIT_PROMPT_ONLY_IN_REPO=1
 
    # GIT_PROMPT_FETCH_REMOTE_STATUS=0   # uncomment to avoid fetching remote status
 
@@ -125,7 +122,7 @@ git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt
    # as last entry source the git-prompt-prefix and gitprompt scripts
    # GIT_PROMPT_THEME=Custom # use custom .git-prompt-colors.sh
    # GIT_PROMPT_THEME=Solarized # use theme optimized for solarized color scheme
-   source ~/.bash-git-prompt/git-prompt-prefix.sh
+   GIT_PROMPT_THEME=Default_TruncatedPwd_WindowTitle
    source ~/.bash-git-prompt/gitprompt.sh
 ```
 
