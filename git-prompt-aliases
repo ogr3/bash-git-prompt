@@ -1,0 +1,13 @@
+##############################################################################
+# Some handy tvo-letter aliases for common git tasks
+# Install by sourcing this file
+##############################################################################
+
+# Git
+alias ga="git add -A ."
+alias gb="git branch"
+alias gc="git commit -m"
+alias gl="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit"
+alias gr="git pull --rebase"
+alias gs="git status"
+
