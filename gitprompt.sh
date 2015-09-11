@@ -225,10 +225,10 @@ function git_prompt_config()
 
   git_prompt_load_theme
 
-  if [ "`type -t prompt_callback`" = 'function' ]; then
-      prompt_callback="prompt_callback"
+  if is_function prompt_callback; then
+    prompt_callback="prompt_callback"
   else
-      prompt_callback="prompt_callback_default"
+    prompt_callback="prompt_callback_default"
   fi
 
   if [ $GIT_PROMPT_LAST_COMMAND_STATE = 0 ]; then
@@ -369,42 +369,42 @@ function setGitPrompt() {
 _have_find_mmin=1
 
 function olderThanMinutes() {
-    local matches
-    local find_exit_code
+  local matches
+  local find_exit_code
 
-    if [[ -z "$_find_command" ]]; then
-        if command -v gfind > /dev/null; then
-            _find_command=gfind
-        else
-            _find_command=find
-        fi
-    fi
-
-    if [[ "$_have_find_mmin" = 1 ]]; then
-        matches=`"$_find_command" "$1" -mmin +"$2" 2> /dev/null`
-        find_exit_code="$?"
-        if [[ -n "$matches" ]]; then
-            return 0
-        else
-            if [[ "$find_exit_code" != 0 ]]; then
-                _have_find_mmin=0
-            else
-                return 1
-            fi
-        fi
-    fi
-
-    # try perl, solaris ships with perl
-    if command -v perl > /dev/null; then
-        perl -e '((time - (stat("'"$1"'"))[9]) / 60) > '"$2"' && exit(0) || exit(1)'
-        return "$?"
+  if [[ -z "$_find_command" ]]; then
+    if command -v gfind > /dev/null; then
+      _find_command=gfind
     else
-        echo >&2
-        echo "[1;31mWARNING[0m: neither a find that supports -mmin (such as GNU find) or perl is available, disabling remote status checking. Install GNU find as gfind or perl to enable this feature, or set GIT_PROMPT_FETCH_REMOTE_STATUS=0 to disable this warning." >&2
-        echo >&2
-        GIT_PROMPT_FETCH_REMOTE_STATUS=0
-        return 1
+      _find_command=find
     fi
+  fi
+
+  if [[ "$_have_find_mmin" = 1 ]]; then
+    matches=`"$_find_command" "$1" -mmin +"$2" 2> /dev/null`
+    find_exit_code="$?"
+    if [[ -n "$matches" ]]; then
+      return 0
+    else
+      if [[ "$find_exit_code" != 0 ]]; then
+        _have_find_mmin=0
+      else
+        return 1
+      fi
+    fi
+  fi
+
+  # try perl, solaris ships with perl
+  if command -v perl > /dev/null; then
+    perl -e '((time - (stat("'"$1"'"))[9]) / 60) > '"$2"' && exit(0) || exit(1)'
+    return "$?"
+  else
+    echo >&2
+    echo "[1;31mWARNING[0m: neither a find that supports -mmin (such as GNU find) or perl is available, disabling remote status checking. Install GNU find as gfind or perl to enable this feature, or set GIT_PROMPT_FETCH_REMOTE_STATUS=0 to disable this warning." >&2
+    echo >&2
+    GIT_PROMPT_FETCH_REMOTE_STATUS=0
+    return 1
+  fi
 }
 
 function checkUpstream() {
@@ -522,6 +522,11 @@ function updatePrompt() {
   fi
 
   PS1="${NEW_PROMPT//_LAST_COMMAND_INDICATOR_/${LAST_COMMAND_INDICATOR}}"
+}
+
+#Use exit status for declare to determine whether input argument is a bash function
+function is_function {
+  declare -Ff "$1" >/dev/null;
 }
 
 function prompt_callback_default {
