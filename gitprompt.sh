@@ -1,7 +1,6 @@
 #!/bin/sh
 
-function async_run() 
-{
+function async_run() {
   {
     eval "$@" &> /dev/null
   }&
