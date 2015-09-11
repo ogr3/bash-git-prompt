@@ -1,14 +1,13 @@
 #!/bin/sh
 
-function async_run()
+function async_run() 
 {
   {
     eval "$@" &> /dev/null
   }&
 }
 
-function git_prompt_dir()
-{
+function git_prompt_dir() {
   # assume the gitstatus.sh is in the same directory as this script
   # code thanks to http://stackoverflow.com/questions/59895
   if [ -z "$__GIT_PROMPT_DIR" ]; then
@@ -23,11 +22,10 @@ function git_prompt_dir()
 }
 
 function echoc() {
-    echo -e "${1}$2${ResetColor}" | sed 's/\\\]//g'  | sed 's/\\\[//g'
+  echo -e "${1}$2${ResetColor}" | sed 's/\\\]//g'  | sed 's/\\\[//g'
 }
 
-function get_theme()
-{
+function get_theme() {
   local CUSTOM_THEME_FILE="${HOME}/.git-prompt-colors.sh"
   local DEFAULT_THEME_FILE="${__GIT_PROMPT_DIR}/themes/Default.bgptheme"
 
@@ -67,16 +65,14 @@ function get_theme()
   fi
 }
 
-function git_prompt_load_theme()
-{
+function git_prompt_load_theme() {
   get_theme
   local DEFAULT_THEME_FILE="${__GIT_PROMPT_DIR}/themes/Default.bgptheme"
   source "${DEFAULT_THEME_FILE}"
   source "${__GIT_PROMPT_THEME_FILE}"
 }
 
-function git_prompt_list_themes()
-{
+function git_prompt_list_themes() {
   local oldTheme
   local oldThemeFile
 
@@ -160,7 +156,7 @@ function gp_set_file_var() {
 # return 0 (true) if any FILEPATH is readable, set ENVAR to it
 # return 1 (false) if not
 
-function gp_maybe_set_envar_to_path(){
+function gp_maybe_set_envar_to_path() {
   local envar="$1"
   shift
   local file
@@ -183,6 +179,7 @@ git_prompt_reset() {
   for var in GIT_PROMPT_DIR __GIT_PROMPT_COLORS_FILE __PROMPT_COLORS_FILE __GIT_STATUS_CMD GIT_PROMPT_THEME_NAME; do
     unset $var
   done
+  unset -f prompt_callback
 }
 
 # gp_format_exit_status RETVAL
@@ -203,8 +200,7 @@ gp_format_exit_status() {
     fi
 }
 
-function git_prompt_config()
-{
+function git_prompt_config() {
   #Checking if root to change output
   _isroot=false
   [[ $UID -eq 0 ]] && _isroot=true
@@ -524,13 +520,14 @@ function updatePrompt() {
   PS1="${NEW_PROMPT//_LAST_COMMAND_INDICATOR_/${LAST_COMMAND_INDICATOR}}"
 }
 
-#Use exit status for declare to determine whether input argument is a bash function
+# Use exit status from declare command to determine whether input argument is a
+# bash function
 function is_function {
   declare -Ff "$1" >/dev/null;
 }
 
 function prompt_callback_default {
-    return
+  return
 }
 
 function gp_install_prompt {
