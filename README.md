@@ -122,7 +122,7 @@ git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt
    # as last entry source the git-prompt-prefix and gitprompt scripts
    # GIT_PROMPT_THEME=Custom # use custom .git-prompt-colors.sh
    # GIT_PROMPT_THEME=Solarized # use theme optimized for solarized color scheme
-   GIT_PROMPT_THEME=Default_TruncatedPwd_WindowTitle
+   GIT_PROMPT_THEME=TruncatedPwd_WindowTitle
    source ~/.bash-git-prompt/gitprompt.sh
 ```
 
