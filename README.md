@@ -119,7 +119,11 @@ git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt
    # GIT_PROMPT_START=...    # uncomment for custom prompt start sequence
    # GIT_PROMPT_END=...      # uncomment for custom prompt end sequence
 
-   # as last entry source the git-prompt-prefix and gitprompt scripts
+   # To get a few handy bash aliases for common git-commands, uncomment
+   # the following line:
+   # source ~/.bash-git-prompt/git-prompt-aliases
+
+   # as last entry source the gitprompt script
    # GIT_PROMPT_THEME=Custom # use custom .git-prompt-colors.sh
    # GIT_PROMPT_THEME=Solarized # use theme optimized for solarized color scheme
    GIT_PROMPT_THEME=TruncatedPwd_WindowTitle
