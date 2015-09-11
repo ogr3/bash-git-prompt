@@ -92,7 +92,8 @@ The symbols are as follows:
 
 ```sh
 if [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
-    source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
+  GIT_PROMPT_THEME=TruncatedPwd_WindowTitle
+  source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
 fi
 ```
 
