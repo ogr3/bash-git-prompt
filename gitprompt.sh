@@ -420,8 +420,7 @@ function checkUpstream() {
   fi
 }
 
-function replaceSymbols()
-{
+function replaceSymbols() {
   if [[ -z ${GIT_PROMPT_SYMBOLS_NO_REMOTE_TRACKING} ]]; then
     GIT_PROMPT_SYMBOLS_NO_REMOTE_TRACKING=L
   fi
