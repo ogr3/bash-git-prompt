@@ -79,7 +79,7 @@ function git_prompt_list_themes() {
   git_prompt_dir
   get_theme
 
-  for themefile in `ls "$__GIT_PROMPT_DIR/themes"`; do
+  for themefile in $(cd "$__GIT_PROMPT_DIR/themes" && echo *); do
     local theme="$(basename $themefile .bgptheme)"
 
     if [[ "${GIT_PROMPT_THEME}" = "${theme}" ]]; then
