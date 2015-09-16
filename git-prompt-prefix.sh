@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Exports a prefix to the bash-git-prompt using GIT_PROMPT_START 
-# that truncates pwd to a max length depending on the terminal column width. 
-# Also uses the prompt_callback function of bash-git-prompt to set the 
+# Exports a prefix to the bash-git-prompt using GIT_PROMPT_START
+# that truncates pwd to a max length depending on the terminal column width.
+# Also uses the prompt_callback function of bash-git-prompt to set the
 # window title
 #
 # The prefix will use a Debian-style prompt on the form
@@ -14,7 +14,7 @@
 # This repo: https://github.com/ogr3/bash-git-prompt
 #
 # Add to .bashrc:
-# 
+#
 # if [ -f ~/.bash-git-prompt/gitprompt.sh ] &&  [ -f ~/.bash-git-prompt/git-prompt-prefix.sh ]; then
 #  source ~/.bash-git-prompt/git-prompt-prefix.sh
 #  source ~/.bash-git-prompt/gitprompt.sh
@@ -43,9 +43,9 @@ function truncate_pwd {
 PROMPT_COMMAND=truncate_pwd
 
 case "$TERM" in
-    xterm*|rxvt*)
-        export GIT_PROMPT_START="\[\033[0;33m\][\u@\h: \${newPWD}]\[\033[0m\]"
-        ;;
-    *)
-        ;;
+  xterm*|rxvt*)
+export GIT_PROMPT_START="\[\033[0;33m\][\u@\h: \${newPWD}]\[\033[0m\]"
+;;
+*)
+;;
 esac
