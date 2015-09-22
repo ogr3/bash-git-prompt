@@ -65,7 +65,6 @@ function get_theme() {
 }
 
 function git_prompt_load_theme() {
-  git_prompt_reset
   get_theme
   local DEFAULT_THEME_FILE="${__GIT_PROMPT_DIR}/themes/Default.bgptheme"
   source "${DEFAULT_THEME_FILE}"
