@@ -178,7 +178,6 @@ git_prompt_reset() {
   for var in GIT_PROMPT_DIR __GIT_PROMPT_COLORS_FILE __PROMPT_COLORS_FILE __GIT_STATUS_CMD GIT_PROMPT_THEME_NAME; do
     unset $var
   done
-  unset -f prompt_callback
 }
 
 # gp_format_exit_status RETVAL
