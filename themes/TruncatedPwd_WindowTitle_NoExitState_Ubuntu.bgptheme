@@ -2,7 +2,8 @@
 # Changes the prompt to a Debian-style one that truncates pwd to a max length
 # depending on the terminal column width. Also uses the prompt_callback
 # function of bash-git-prompt to set the window title to almost the same
-# Debian-style.
+# Debian-style. This version has been tweaked for Ubuntu standard terminal 
+# fonts.
 #
 # The prompt will use a Debian-style on the form
 #
