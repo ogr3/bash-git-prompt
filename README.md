@@ -122,7 +122,8 @@ git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt
    # GIT_PROMPT_FETCH_REMOTE_STATUS=0   # uncomment to avoid fetching remote status
 
    # GIT_PROMPT_SHOW_UPSTREAM=1 # uncomment to show upstream tracking branch
-
+   # GIT_SHOW_UNTRACKED_FILES=all # can be no, normal or all; determines counting of untracked files
+   
    # GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh # uncomment to support Git older than 1.7.10
 
    # GIT_PROMPT_START=...    # uncomment for custom prompt start sequence
@@ -138,6 +139,10 @@ git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt
    GIT_PROMPT_THEME=TruncatedPwd_WindowTitle
    source ~/.bash-git-prompt/gitprompt.sh
 ```
+
+You can set the `GIT_SHOW_UNTRACKED_FILES` variable to `no` or `normal` to speed things up if you have lots of
+untracked files in your repository. This can be the case for build systems that put their build artifacts in
+the subdirectory structure of the git repository.
 
 - `cd` to a git repository and test it!
 
