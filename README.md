@@ -67,7 +67,7 @@ The symbols are as follows:
 - Local Status Symbols
   - ``✔``: repository clean
   - ``●n``: there are ``n`` staged files
-  - ``✖n``: there are ``n`` files with merge conflict(s)
+  - ``✖n``: there are ``n`` files with merge conflicts
   - ``✚n``: there are ``n`` changed but *unstaged* files
   - ``…n``: there are ``n`` untracked files
   - ``⚑n``: there are ``n`` stash entries
@@ -109,12 +109,17 @@ fi
 cd ~
 git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt
 ```
-### Configuration
+
+Add to the `~/.bashrc`: 
+```
+  GIT_PROMPT_THEME=TruncatedPwd_WindowTitle
+  GIT_PROMPT_ONLY_IN_REPO=1
+  source ~/.bash-git-prompt/gitprompt.sh
+```
+
+### All configs for .bashrc
 
 ```sh
-   # some other config in .bashrc
-
-   # gitprompt configuration
 
    # Set config variables first
    # GIT_PROMPT_ONLY_IN_REPO=1
