@@ -107,11 +107,7 @@ fi
 
 ```sh
 cd ~
-<<<<<<< HEAD
-git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt
-=======
-git clone https://github.com/magicmonty/bash-git-prompt.git .bash-git-prompt --depth=0
->>>>>>> upstream/master
+git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt --depth=0
 ```
 
 Add to the `~/.bashrc`: 
