@@ -110,10 +110,9 @@ cd ~
 git clone https://github.com/ogr3/bash-git-prompt.git .bash-git-prompt --depth=1
 ```
 
-Add to the `~/.bashrc`: 
+Add to the `~/.bashrc`:
 ```
   GIT_PROMPT_THEME=TruncatedPwd_WindowTitle
-  GIT_PROMPT_ONLY_IN_REPO=1
   source ~/.bash-git-prompt/gitprompt.sh
 ```
 
