@@ -138,7 +138,8 @@ Add to the `~/.bashrc`:
    # source ~/.bash-git-prompt/git-prompt-aliases
 
    # as last entry source the gitprompt script
-   # GIT_PROMPT_THEME=Custom # use custom .git-prompt-colors.sh
+   # GIT_PROMPT_THEME=Custom # use custom theme specified in file GIT_PROMPT_THEME_FILE (default ~/.git-prompt-colors.sh)
+   # GIT_PROMPT_THEME_FILE=~/.git-prompt-colors.sh
    # GIT_PROMPT_THEME=Solarized # use theme optimized for solarized color scheme
    GIT_PROMPT_THEME=TruncatedPwd_WindowTitle
    source ~/.bash-git-prompt/gitprompt.sh
