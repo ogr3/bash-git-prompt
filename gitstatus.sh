@@ -86,7 +86,7 @@ else
     IFS="[,]" read -ra remote_fields <<< "${branch_fields[1]}"
     upstream="${remote_fields[0]}"
     for remote_field in "${remote_fields[@]}"; do
-      if [[ "$remote_field" == *ahead* ]]; then
+      if [[ "$remote_field" == "ahead "* ]]; then
         num_ahead=${remote_field:6}
         ahead="_AHEAD_${num_ahead}"
       fi
