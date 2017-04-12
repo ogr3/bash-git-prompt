@@ -90,7 +90,7 @@ else
         num_ahead=${remote_field:6}
         ahead="_AHEAD_${num_ahead}"
       fi
-      if [[ "$remote_field" == " behind "* ]]; then
+      if [[ "$remote_field" == *"behind "* ]]; then
         num_behind=${remote_field:7}
         behind="_BEHIND_${num_behind# }"
       fi
