@@ -345,9 +345,12 @@ function setGitPrompt() {
   OLD_GIT_PROMPT_SHOW_UNTRACKED_FILES=${GIT_PROMPT_SHOW_UNTRACKED_FILES}
   unset GIT_PROMPT_SHOW_UNTRACKED_FILES
 
+  OLD_GIT_PROMPT_IGNORE_SUBMODULES=${GIT_PROMPT_IGNORE_SUBMODULES}
+  unset GIT_PROMPT_IGNORE_SUBMODULES
+
   if [[ -e "$repo/.bash-git-rc" ]]; then
     # The config file can only contain variable declarations on the form A_B=0 or G_P=all
-    local CONFIG_SYNTAX="^(FETCH_REMOTE_STATUS|GIT_PROMPT_SHOW_UNTRACKED_FILES|GIT_PROMPT_IGNORE)=[0-9a-z]+$"
+    local CONFIG_SYNTAX="^(FETCH_REMOTE_STATUS|GIT_PROMPT_SHOW_UNTRACKED_FILES|GIT_PROMPT_IGNORE_SUBMODULES|GIT_PROMPT_IGNORE)=[0-9a-z]+$"
     if egrep -q -v "$CONFIG_SYNTAX" "$repo/.bash-git-rc"; then
       echo ".bash-git-rc can only contain variable values on the form NAME=value. Ignoring file." >&2
     else
@@ -359,6 +362,11 @@ function setGitPrompt() {
     GIT_PROMPT_SHOW_UNTRACKED_FILES=${OLD_GIT_PROMPT_SHOW_UNTRACKED_FILES}
   fi
   unset OLD_GIT_PROMPT_SHOW_UNTRACKED_FILES
+
+  if [ -z "${GIT_PROMPT_IGNORE_SUBMODULES}" ]; then
+    GIT_PROMPT_IGNORE_SUBMODULES=${OLD_GIT_PROMPT_IGNORE_SUBMODULES}
+  fi
+  unset OLD_GIT_PROMPT_IGNORE_SUBMODULES
 
   if [[ "$GIT_PROMPT_IGNORE" = 1 ]]; then
     PS1="$EMPTY_PROMPT"
@@ -475,6 +483,7 @@ function updatePrompt() {
 
   export __GIT_PROMPT_IGNORE_STASH=${GIT_PROMPT_IGNORE_STASH}
   export __GIT_PROMPT_SHOW_UPSTREAM=${GIT_PROMPT_SHOW_UPSTREAM}
+  export __GIT_PROMPT_IGNORE_SUBMODULES=${GIT_PROMPT_IGNORE_SUBMODULES}
 
   if [ -z "${GIT_PROMPT_SHOW_UNTRACKED_FILES}" ]; then
     export __GIT_PROMPT_SHOW_UNTRACKED_FILES=all
@@ -519,7 +528,15 @@ function updatePrompt() {
 
   local NEW_PROMPT="$EMPTY_PROMPT"
   if [[ -n "$git_status_fields" ]]; then
-    local STATUS_PREFIX="${PROMPT_LEADING_SPACE}${GIT_PROMPT_PREFIX}${GIT_PROMPT_BRANCH}\${GIT_BRANCH}${ResetColor}${GIT_FORMATTED_UPSTREAM}"
+
+    case "$GIT_BRANCH" in
+      $GIT_PROMPT_MASTER_BRANCHES)
+        local STATUS_PREFIX="${PROMPT_LEADING_SPACE}${GIT_PROMPT_PREFIX}${GIT_PROMPT_MASTER_BRANCH}\${GIT_BRANCH}${ResetColor}${GIT_FORMATTED_UPSTREAM}"
+        ;;
+      *)
+        local STATUS_PREFIX="${PROMPT_LEADING_SPACE}${GIT_PROMPT_PREFIX}${GIT_PROMPT_BRANCH}\${GIT_BRANCH}${ResetColor}${GIT_FORMATTED_UPSTREAM}"
+        ;;
+    esac
     local STATUS=""
 
     # __add_status KIND VALEXPR INSERT
