@@ -448,7 +448,7 @@ function replaceSymbols() {
   # Disable globbing, so a * could be used as symbol here
   set -f
 
-  if [[ -z ${GIT_PROMPT_SYMBOLS_NO_REMOTE_TRACKING+x} ]]; then
+  if [ -z ${GIT_PROMPT_SYMBOLS_NO_REMOTE_TRACKING+x} ]; then
     GIT_PROMPT_SYMBOLS_NO_REMOTE_TRACKING=L
   fi
 
@@ -516,7 +516,7 @@ function updatePrompt() {
   if [[ "." == "$GIT_REMOTE" ]]; then
     unset GIT_REMOTE
   fi
-  local GIT_REMOTE_USERNAME_REPO="$(replaceSymbols ${git_status_fields[2]})"
+  local GIT_REMOTE_USERNAME_REPO=$(replaceSymbols ${git_status_fields[2]})
   if [[ "." == "$GIT_REMOTE_USERNAME_REPO" ]]; then
     unset GIT_REMOTE_USERNAME_REPO
   fi
