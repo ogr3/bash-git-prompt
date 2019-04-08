@@ -114,8 +114,10 @@ git clone https://github.com/ogr3/bash-git-prompt.git ~/.bash-git-prompt --depth
 
 Add to the `~/.bashrc`:
 ```
-  GIT_PROMPT_THEME=TruncatedPwd_WindowTitle
-  source ~/.bash-git-prompt/gitprompt.sh
+if [ -f "$HOME/.bash-git-prompt/gitprompt.sh" ]; then
+    GIT_PROMPT_THEME=TruncatedPwd_WindowTitle
+    source $HOME/.bash-git-prompt/gitprompt.sh
+fi
 ```
 
 ### install for the fish shell
@@ -318,7 +320,7 @@ GIT_PROMPT_COMMAND_FAIL="${Red}✘-_LAST_COMMAND_STATE_ " # displays as ✘-1 fo
 git_prompt_reset
 ```
 
-- You can disable/enable gitprompt by runnning:
+- You can disable/enable gitprompt by running:
 
 ```sh
 git_prompt_toggle
